@@ -18,7 +18,7 @@ async function getRoomCapacity(roomId: number) {
 
 async function getRoom(roomId: number) {
     return prisma.room.findUnique({
-        where: {id: roomId},
+        where: { id: roomId },
         include: {
             Booking: true
         }
@@ -27,14 +27,14 @@ async function getRoom(roomId: number) {
 
 async function createBooking(createBooking: CreateBooking) {
     return await prisma.booking.create({
-        data: createBooking            
-        }
+        data: createBooking
+    }
     )
 }
 
 async function findBookingByBookingId(bookingId: number) {
     return await prisma.booking.findUnique({
-        where: {id: bookingId}
+        where: { id: bookingId }
     })
 }
 

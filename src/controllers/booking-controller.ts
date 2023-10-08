@@ -18,16 +18,18 @@ export async function postBooking(req: AuthenticatedRequest, res: Response) {
 
     const booking = await bookingService.postBooking(userId, roomId)
     
-  
     return res.status(httpStatus.OK).send({"bookingId": booking.id});
 }
 
 export async function updateBooking(req: AuthenticatedRequest, res: Response) {
     const { userId } = req;
     const { roomId } = req.body;
-    const bookingId = req.params;
+    const bookingId = Number(req.params.bookingId);
+
+    console.log(`BookingId : ${bookingId}`)
+    
 
     const id = await bookingService.updateBooking({userId, roomId}, Number(bookingId))
 
-    return res.status(httpStatus.OK).send({bookingId: id});
+    return res.status(httpStatus.OK).send({"bookingId": id});
 }
