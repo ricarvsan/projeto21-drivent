@@ -37,8 +37,8 @@ async function updateBooking(updateBooking: CreateBooking, bookingId: number) {
     if(!room) throw notFoundError();
     if(room.Booking.length === room.capacity) throw forbiddenError('Room capacity is full')
 
-    const { id } = await bookingRepository.updateBooking(updateBooking)
-    return id;
+    const updatedBooking = await bookingRepository.updateBooking(updateBooking)
+    return updatedBooking;
 }
 
 
