@@ -32,6 +32,23 @@ async function createBooking(createBooking: CreateBooking) {
     )
 }
 
+async function findBookingByBookingId(bookingId: number) {
+    return await prisma.booking.findUnique({
+        where: {id: bookingId}
+    })
+}
+
+async function updateBooking(updateData: CreateBooking) {
+    return await prisma.booking.update({
+        where: {
+            id: updateData.userId
+        },
+        data: {
+            roomId: updateData.roomId
+        }
+    })
+}
+
 export type CreateBooking = Omit<Booking, 'id' | 'createdAt' | 'updatedAt'>
 export type RoomBooking = Omit<CreateBooking, 'userId'>
 
@@ -39,5 +56,7 @@ export const bookingRepository = {
     findBookingByUserId,
     getRoomCapacity,
     getRoom,
-    createBooking
+    createBooking,
+    findBookingByBookingId,
+    updateBooking
 };

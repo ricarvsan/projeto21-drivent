@@ -1,5 +1,5 @@
-import { forbiddenError, notFoundError } from "@/errors";
-import { bookingRepository, enrollmentRepository, ticketsRepository } from "@/repositories";
+import { enrollmentNotFoundError, forbiddenError, notFoundError } from "@/errors";
+import { CreateBooking, bookingRepository, enrollmentRepository, ticketsRepository } from "@/repositories";
 
 async function getBookingById(userId: number) {
     const result = await bookingRepository.findBookingByUserId(userId)
@@ -13,6 +13,7 @@ async function getBookingById(userId: number) {
 
 async function postBooking(userId: number, roomId: number) {
     const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
+    if(!enrollment) throw enrollmentNotFoundError();
     
     const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
     if(ticket.TicketType.isRemote) throw forbiddenError('Booking is not allowed for Remote TicketTypes');
@@ -28,8 +29,21 @@ async function postBooking(userId: number, roomId: number) {
     return booking;
 }
 
+async function updateBooking(updateBooking: CreateBooking, bookingId: number) {
+    const booking = await bookingRepository.findBookingByBookingId(bookingId)
+    if(!booking) throw forbiddenError('User doesnt have a booking')
+
+    const room = await bookingRepository.getRoom(updateBooking.roomId);
+    if(!room) throw notFoundError();
+    if(room.Booking.length === room.capacity) throw forbiddenError('Room capacity is full')
+
+    const { id } = await bookingRepository.updateBooking(updateBooking)
+    return id;
+}
+
 
 export const bookingService = {
     getBookingById,
-    postBooking
+    postBooking,
+    updateBooking
 };
