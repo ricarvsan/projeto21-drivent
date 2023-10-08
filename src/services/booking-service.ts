@@ -29,15 +29,15 @@ async function postBooking(userId: number, roomId: number) {
     return booking;
 }
 
-async function updateBooking(updateBooking: CreateBooking, bookingId: number) {
+async function updateBooking(roomId: number, bookingId: number) {
     const booking = await bookingRepository.findBookingByBookingId(bookingId)
     if(!booking) throw forbiddenError('User doesnt have a booking')
 
-    const room = await bookingRepository.getRoom(updateBooking.roomId);
+    const room = await bookingRepository.getRoom(roomId);
     if(!room) throw notFoundError();
     if(room.Booking.length === room.capacity) throw forbiddenError('Room capacity is full')
 
-    const updatedBooking = await bookingRepository.updateBooking(updateBooking)
+    const updatedBooking = await bookingRepository.updateBooking(roomId, bookingId)
     return updatedBooking;
 }
 
