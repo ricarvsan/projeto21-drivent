@@ -1,5 +1,5 @@
 import { notFoundError } from "@/errors";
-import { bookingRepository } from "@/repositories/booking-repository";
+import { bookingRepository } from "@/repositories";
 
 async function getBookingById(userId:number) {
     const result = await bookingRepository.findBookingByUserId(userId)
