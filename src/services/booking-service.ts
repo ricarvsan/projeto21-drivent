@@ -1,5 +1,5 @@
 import { enrollmentNotFoundError, forbiddenError, notFoundError } from "@/errors";
-import { CreateBooking, bookingRepository, enrollmentRepository, ticketsRepository } from "@/repositories";
+import { bookingRepository, enrollmentRepository, ticketsRepository } from "@/repositories";
 
 async function getBookingById(userId: number) {
     const result = await bookingRepository.findBookingByUserId(userId)

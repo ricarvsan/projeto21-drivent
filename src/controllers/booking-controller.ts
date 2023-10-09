@@ -22,7 +22,6 @@ export async function postBooking(req: AuthenticatedRequest, res: Response) {
 }
 
 export async function updateBooking(req: AuthenticatedRequest, res: Response) {
-    const { userId } = req;
     const { roomId } = req.body;
     const bookingId = Number(req.params.bookingId);    
 
